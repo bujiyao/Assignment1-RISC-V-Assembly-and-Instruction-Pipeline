@@ -36,16 +36,15 @@ main:
 
 # hammingWeight function
 hammingWeight:
-    mv t0, a0                 # t0 = input value
-    li t1, 0                  # t1 = count = 0
-count_bits:
-    beqz t0, end_hammingWeight  # If t0 == 0, jump to end
-    addi t1, t1, 1              # Increment count
-    addi t2, t0, -1             # t2 = t0 - 1
-    and t0, t0, t2              # t0 = t0 & (t0 - 1)
-    j count_bits                # Continue loop
-end_hammingWeight:
-    mv a0, t1                   # Return count
+    li t0, 0                  # Initialize count to 0
+hammingWeight_loop:
+    beqz a0, hammingWeight_end  # If n == 0, exit loop
+    addi t1, a0, -1           # t1 = n - 1
+    and a0, a0, t1            # n = n & (n - 1)
+    addi t0, t0, 1            # Increment count
+    j hammingWeight_loop
+hammingWeight_end:
+    mv a0, t0                 # Move count to return register
     ret
 
 # readBinaryWatch function
@@ -128,4 +127,5 @@ end_readBinaryWatch:
     lw s5, 0(sp)
     addi sp, sp, 28
     ret
+
 
